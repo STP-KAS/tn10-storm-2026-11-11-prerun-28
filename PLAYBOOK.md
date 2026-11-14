@@ -26,8 +26,8 @@ Desk and Mini 100 GB free, box 20 GB. Below that, nothing starts. No compile. No
 ## Retry 1 (UTC)
 
 - 07:55Z Mini command line, start script and pool recorded (private copies); acceptance check: 2,705, 10 accepted still in the pool.
-- 07:56:52Z Ctrl+C to Mini's kaspad; stopped cleanly 28 s later. Wrapper closed. 07:57:50Z started through its scheduled start task with `--unsaferpc` added to the start script (backup kept). 07:58:47Z synced, pool 0.
-- 07:59:12Z desk forward and allow rule (Mini's address only); 07:59:28Z Mini addPeer: linked both ways (protocol 11).
+- 07:56:54Z Ctrl+C to Mini's kaspad; stopped cleanly 28 s later. Wrapper closed. 07:58:07Z started through its scheduled start task with `--unsaferpc` added to the start script (backup kept). 07:58:47Z synced, pool 0.
+- 07:59:11Z desk forward and allow rule (Mini's address only); 07:59:28Z Mini addPeer: linked both ways (protocol 11).
 - 08:03:24–28Z cut (block rules desk inbound, Mini outbound); 08:06:33–39Z rules removed; 08:06:41Z addPeer again.
 - 08:11:57Z end of window: both pools 0; our three transactions landed.
 - 08:12:14Z desk forward and allow rule removed. Checked on both machines: no forward, 0 TN10-prerun28 rules, nothing on the forward's port. Samplers stopped. Mini start script restored to the original (hash checked).

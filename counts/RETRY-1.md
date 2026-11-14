@@ -9,18 +9,18 @@ One change from the first attempt: Mini's kaspad was restarted once, gracefully,
 | Time | Step | What we saw |
 |---|---|---|
 | 07:55:34 | Before: Mini pool and acceptance check | 2,705 in the pool; 10 found accepted on Mini's own chain, all 10 still in the pool (1 of 20 output addresses unreadable: lower bound) |
-| 07:56:52 | Ctrl+C to Mini's kaspad console | clean shutdown in 28 s, log `Kaspad has stopped...`; its start wrapper was left at the batch "terminate" prompt and was closed |
-| 07:57:50 | Start through its own scheduled start task, start script with `--unsaferpc` added | new process; same data directory; RPC and p2p still loopback-only |
+| 07:56:54 | Ctrl+C to Mini's kaspad console | clean shutdown in 28 s, log `Kaspad has stopped...`; its start wrapper was left at the batch "terminate" prompt and was closed |
+| 07:58:07 | Start through its own scheduled start task, start script with `--unsaferpc` added (a first start at 07:57:41 was ignored by the task while the old wrapper was still open) | new process; same data directory; RPC and p2p still loopback-only |
 | 07:58:47 | First read | synced, 8 peers, **pool 0** |
 | 07:59:00 | The 2,705 checked again | 0 of them in the pool (the 10 accepted ones included) |
 
-Mini's data directory was not touched (about 70 GB). The restart took about a minute from Ctrl+C to synced.
+Mini's data directory was not touched (about 70 GB). From Ctrl+C to synced took under 2 minutes (start to first synced read: 40 s).
 
 ## Link, cut, restore (window written before the cut: 5 min after restore; cut max 10 min)
 
 | Time | Step | Desk | Mini |
 |---|---|---|---|
-| 07:59:12 | Desk: temporary port forward (LAN address → its loopback p2p listener) and an inbound allow rule for Mini's address only | — | — |
+| 07:59:11 | Desk: temporary port forward (LAN address → its loopback p2p listener) and an inbound allow rule for Mini's address only | — | — |
 | 07:59:28 | Mini `addPeer` (non-permanent) to the desk's forward | Mini listed as inbound, protocol 11 | desk listed as outbound, protocol 11 |
 | 08:00:43 | Our transaction 1 (key 0 → key 0, 100 sompi/gram) to the desk | landed (DAA +about 2 s worth) | — |
 | 08:03:24–28 | **Cut**: block rules (desk inbound, Mini outbound) for that one port | link gone by the 08:03:46 sample | `connection reset from peer` at 08:03:29.6 |
