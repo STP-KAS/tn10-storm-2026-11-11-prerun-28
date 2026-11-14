@@ -903,3 +903,11 @@ Copied above from [pre-run 29's locks/LOCKED.md](https://github.com/STP-KAS/tn10
 - (28) Abort: desk kaspad exit, desk DAA still for 60 s, cut longer than 10 minutes, any restart. Spend cap 2,000 tKAS
   (three normal transactions planned, about 0.0002 tKAS fee each).
 ```
+
+```
+- 2026-11-14T07:47Z: acc28 with 20 addresses per call dropped Mini's websocket (one address with a very large UTXO set);
+  one address per call, skip and count failures. Stays.
+- 2026-11-14T07:50:02Z: addPeer refused: "Method unavailable in safe mode. Run the node with --unsaferpc argument."
+  Neither node runs with --unsaferpc; a restart is forbidden. Pre-run 28 stopped before the link; forward and rule removed
+  07:50:26Z and checked. Stays: check that the link can be made (unsaferpc, or a start flag) before planning a cut.
+```

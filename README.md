@@ -12,10 +12,10 @@
 |---|---|
 | Target | the [target plan](https://github.com/STP-KAS/tn10-target-plan/blob/main/plan/PLAN.md)'s pre-run 28 card: after a brief desk–Mini peer cut, do already-accepted transactions leave each node's mempool within 5 minutes of restore? (#1146 / #1147) |
 | The change | a temporary peer link (port forward and allow rule on Mini, non-permanent addPeer on the desk), cut by local block rules, restored, then removed ([plan/PLAN.md](plan/PLAN.md)) |
-| Met or not met | open |
+| Met or not met | **not run, blocked before the link**: the desk node refused `addPeer` (`Method unavailable in safe mode. Run the node with --unsaferpc argument.`); turning that on needs a restart, which the rules forbid. No cut happened, so the card's question is not answered. Baseline seen before any change: Mini's pool held 2,705 transactions the desk's did not, at least 10 of them already accepted ([counts/BASELINE.md](counts/BASELINE.md), [LESSONS](logs/LESSONS.md)) |
 | Retry count | 0 |
 | Core tags | 5 (mempool behaviour under a partition) |
-| Status | open |
+| Status | stopped 2026-11-14 07:50Z; temporary forward and rule removed and checked (none left); both nodes synced, never restarted |
 
 ## Machines
 
