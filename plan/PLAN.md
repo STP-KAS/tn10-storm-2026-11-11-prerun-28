@@ -31,3 +31,15 @@ Met if the post-restore sample on each node, at the end of the 5-minute window, 
 ## Prediction
 
 The link forms (Mini sees the desk inbound, the desk sees Mini outbound). The block rule alone does not drop an open connection (Windows firewall rules apply to new connections); removing the forward does. Our three transactions land within seconds and leave both pools. Mini's 2,705 old entries are not cleared by the cut and restore: a peer reconnect does not revalidate the pool, so the post-restore result on Mini is **not met** (the #1146 shape), and the desk stays clean (met on the desk).
+
+## Retry 1, written 07:56Z before the Mini restart
+
+At 08:54 Brussels the operator gave full authority and asked for a retry of 28 with one change: **Mini's kaspad is restarted once with the same arguments and the same data directory plus `--unsaferpc`** (never a wipe), so the link can be made from the Mini side. The desk node is still never restarted.
+
+1. Recorded before anything (07:55Z): Mini's command line and start script (private copies), data directory about 70 GB, pool 2,705 with 10 found accepted and still in the pool.
+2. Graceful stop of Mini's kaspad (Ctrl+C to its console, no kill unless it does not exit in 3 minutes, logged); start the same way it was started (its scheduled start task and start script), with `--unsaferpc` added to the script. Wait until synced.
+3. Re-read Mini's pool after the restart and re-run the acceptance check: an observation for the #1146 pattern.
+4. Link from the Mini side: on the desk, a temporary port forward from its LAN address to its loopback p2p listener and an inbound allow rule for Mini's address only (TN10-prerun28-*); Mini `addPeer` to that address. Then the same steps as above: linked 4 min with one desk transaction, cut by block rules (escalating to removing the forward if the connection survives 2 min), cut target 3 min (max 10), restore, observe 5 min, acceptance check, remove everything and check.
+5. Afterwards Mini keeps `--unsaferpc` only if its RPC listeners stay loopback-only (they do in its arguments); otherwise one more restart to the original arguments.
+
+Prediction for step 3: the restart rebuilds Mini's pool from nothing (kaspad keeps no pool on disk), so the 2,705 entries, including the 10 accepted ones, are gone after the restart.
