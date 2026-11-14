@@ -911,3 +911,13 @@ Copied above from [pre-run 29's locks/LOCKED.md](https://github.com/STP-KAS/tn10
   Neither node runs with --unsaferpc; a restart is forbidden. Pre-run 28 stopped before the link; forward and rule removed
   07:50:26Z and checked. Stays: check that the link can be made (unsaferpc, or a start flag) before planning a cut.
 ```
+
+```
+- 2026-11-14T07:57Z: retry 1, one change: Mini kaspad restarted gracefully (Ctrl+C, clean stop in 28 s) on the same data with
+  --unsaferpc, through its own start task. Pool 2,705 -> 0. Stays: a long-running node's stuck pool is cleared by a restart.
+- 2026-11-14T08:00Z: peer fields come back in snake_case from the SDK; samplers read both spellings. Stays.
+- 2026-11-14T08:03Z: a Windows block rule cut the open p2p connection within seconds (Mini: connection reset at 08:03:29.6).
+  Stays: no need to remove the forward to cut.
+- Result retry 1: met (both pools 0 at the end of the 5-minute window). All TN10-prerun28 rules and forwards removed and
+  checked 08:12Z. Mini start script restored to the original; the running Mini node keeps --unsaferpc (RPC loopback-only).
+```

@@ -2,6 +2,7 @@
 // synced, virtual DAA, mempool size, mempool ids, peer count, whether the other machine's node is a connected peer
 // (matched on its user-agent comment). Ids go only to the private file; stdout prints counts.
 // Usage: node samp28.mjs <kaspa.js> <wrpc-port> <label> <other-ua-comment> <private out.jsonl> <seconds> <every-s>
+// 08:00Z: the SDK returns peer fields in snake_case (user_agent, is_outbound); both spellings are read.
 import fs from "node:fs"; import { createRequire } from "node:module";
 const [sdk, port, label, otherUa, outf, secs, every] = process.argv.slice(2); const k = createRequire(import.meta.url)(sdk);
 const to = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("timeout")), ms))]);
@@ -15,7 +16,7 @@ while (Date.now() < end) {
     const m = await to(c.getMempoolEntries({ includeOrphanPool: false, filterTransactionPool: false }), 8000);
     const ids = (m.mempoolEntries || []).map((e) => String(e.transaction?.id ?? e.transaction?.verboseData?.transactionId ?? "")); o.mempool = ids.length; o.ids = ids;
     const p = await to(c.getConnectedPeerInfo(), 5000); const ps = p.peerInfo || []; o.peers = ps.length;
-    const lk = ps.filter((x) => String(x.userAgent || "").includes(otherUa)); o.linked = lk.length > 0; o.link_outbound = lk.map((x) => !!x.isOutbound);
+    const lk = ps.filter((x) => String(x.userAgent ?? x.user_agent ?? "").includes(otherUa)); o.linked = lk.length > 0; o.link_outbound = lk.map((x) => !!(x.isOutbound ?? x.is_outbound));
   } catch (e) { o.err = String(e?.message || e).slice(0, 80); try { await c?.disconnect(); } catch {} c = null; }
   fs.appendFileSync(outf, JSON.stringify(o) + "\n");
   const { ids, ...pub } = o; console.log(JSON.stringify(pub));

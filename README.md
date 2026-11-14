@@ -11,16 +11,16 @@
 | Field | Value |
 |---|---|
 | Target | the [target plan](https://github.com/STP-KAS/tn10-target-plan/blob/main/plan/PLAN.md)'s pre-run 28 card: after a brief desk–Mini peer cut, do already-accepted transactions leave each node's mempool within 5 minutes of restore? (#1146 / #1147) |
-| The change | a temporary peer link (port forward and allow rule on Mini, non-permanent addPeer on the desk), cut by local block rules, restored, then removed ([plan/PLAN.md](plan/PLAN.md)) |
-| Met or not met | **not run, blocked before the link**: the desk node refused `addPeer` (`Method unavailable in safe mode. Run the node with --unsaferpc argument.`); turning that on needs a restart, which the rules forbid. No cut happened, so the card's question is not answered. Baseline seen before any change: Mini's pool held 2,705 transactions the desk's did not, at least 10 of them already accepted ([counts/BASELINE.md](counts/BASELINE.md), [LESSONS](logs/LESSONS.md)) |
-| Retry count | 0 |
+| The change | a temporary peer link, cut by local block rules, restored, then removed; on retry 1 the forward and allow rule were on the desk and Mini made the non-permanent addPeer ([plan/PLAN.md](plan/PLAN.md)) |
+| Met or not met | first attempt: not run (desk `addPeer` refused in safe mode). **Retry 1: met**: after a 3-minute cut and restore, both pools were empty at the end of the 5-minute window; our three transactions landed before, during and after the cut. Before the retry, Mini's pool held 2,705 old entries (at least 10 already accepted, the #1146 shape); its clean restart with `--unsaferpc` cleared them all ([counts/RETRY-1.md](counts/RETRY-1.md), [counts/BASELINE.md](counts/BASELINE.md), [LESSONS](logs/LESSONS.md)) |
+| Retry count | 1 (Mini's kaspad restarted once, same arguments and data directory plus `--unsaferpc`; link made from the Mini side) |
 | Core tags | 5 (mempool behaviour under a partition) |
-| Status | stopped 2026-11-14 07:50Z; temporary forward and rule removed and checked (none left); both nodes synced, never restarted |
+| Status | done 2026-11-14 (retry 1, 07:55–08:12Z); every TN10-prerun28 rule and forward removed and checked on both machines; desk node never restarted; Mini running on its data with `--unsaferpc` (RPC loopback-only), its start script back to the original |
 
 ## Machines
 
 | Machine | Role |
 |---|---|
-| Desk | its existing private TN10 node (kaspad 2.1.0, never restarted); sampler, three normal transactions, the desk-side block rule |
-| Mini | its existing TN10 node (kaspad 2.1.0, never restarted); sampler; the port forward, allow rule and Mini-side block rule |
+| Desk | its existing private TN10 node (kaspad 2.1.0, never restarted); sampler, three normal transactions; on retry 1 the temporary forward, allow rule and desk-side block rule |
+| Mini | its existing TN10 node (kaspad 2.1.0); restarted once on retry 1 (graceful, same data, plus `--unsaferpc`); sampler; addPeer; Mini-side block rule |
 | Box | coordination and this repo |
